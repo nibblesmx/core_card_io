@@ -19,7 +19,7 @@ import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 public class CoreCardIoPlugin implements MethodCallHandler, ActivityResultListener {
-    private static final int MY_SCAN_REQUEST_CODE = 100;
+    private static final int MY_SCAN_REQUEST_CODE = 1337;
 
     private final PluginRegistry.Registrar registrar;
     private Result pendingResult;
@@ -153,6 +153,11 @@ public class CoreCardIoPlugin implements MethodCallHandler, ActivityResultListen
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("onActivityResult", "code: " + requestCode);
+
+        if(pendingResult == null) {
+            return false;
+        }
+
         if (requestCode == MY_SCAN_REQUEST_CODE) {
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
                 CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
