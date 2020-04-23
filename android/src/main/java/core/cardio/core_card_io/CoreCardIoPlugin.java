@@ -41,21 +41,26 @@ public class CoreCardIoPlugin implements MethodCallHandler, ActivityResultListen
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
+        
+
+        pendingResult = result;
+        methodCall = call;
+
+
         if (pendingResult != null) {
             result.error("ALREADY_ACTIVE", "Scan card is already active", null);
             return;
         }
 
-        Activity activity = registrar.activity();
-        if (activity == null) {
-            result.error("no_activity", "core_card_io plugin requires a foreground activity.", null);
-            return;
-        }
+        if (call != null && call.method.equals("scanCard")) {           
+    
+            Activity activity = registrar.activity();
+            if (activity == null) {
+                result.error("no_activity", "core_card_io plugin requires a foreground activity.", null);
+                return;
+            }
 
-        pendingResult = result;
-        methodCall = call;
 
-        if (call.method.equals("scanCard")) {
             Intent scanIntent = new Intent(activity, CardIOActivity.class);
 
             boolean requireExpiry = false;
