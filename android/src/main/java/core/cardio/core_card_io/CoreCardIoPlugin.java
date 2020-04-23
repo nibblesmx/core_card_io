@@ -47,11 +47,6 @@ public class CoreCardIoPlugin implements MethodCallHandler, ActivityResultListen
         methodCall = call;
 
 
-        if (pendingResult != null) {
-            result.error("ALREADY_ACTIVE", "Scan card is already active", null);
-            return;
-        }
-
         if (call != null && call.method.equals("scanCard")) {           
     
             Activity activity = registrar.activity();
